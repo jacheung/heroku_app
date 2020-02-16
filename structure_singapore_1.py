@@ -3,12 +3,15 @@ from scipy import stats
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os.path
 
 
 def main():
-    sum_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_sum_df')
-    map_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_map_df')
-    ranking_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_rank_df')
+    my_path = os.path.abspath(os.path.dirname('singapore_sum_df'))
+    sum_df = pd.read_pickle(os.path.join(my_path, "Dataframes/singapore_sum_df"))
+    map_df = pd.read_pickle(os.path.join(my_path, "Dataframes/singapore_map_df"))
+    ranking_df = pd.read_pickle(os.path.join(my_path, "Dataframes/singapore_rank_df"))
+
     """
     # Structure Research - Singapore February 2020 Newsletter
     ### A dynamic data visualization newsletter for our customers.
