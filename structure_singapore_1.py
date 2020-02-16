@@ -2,7 +2,7 @@ import streamlit as st
 from scipy import stats
 import numpy as np
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 def main():
 
@@ -11,8 +11,8 @@ def main():
     ranking_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_rank_df')
 
     """
-    # Structure Research - Singapore 2020
-    ### A dynamic data visualization tool for our customers:
+    # Structure Research - Singapore February 2020 Newsletter
+    ### A dynamic data visualization newsletter for our customers.
     """
     '##  Map of online data centers'
     years_to_observe = st.slider('Year to view ', 2000, 2030, 2000)
@@ -22,6 +22,16 @@ def main():
     stats.zscore(np.array(map_data['latitude'], dtype=np.float64))
     map_data = map_data[stats.zscore(np.array(map_data['latitude'], dtype=np.float64)) < 1] # removing outlier points due to localization error
     st.map(map_data)
+
+    eval_years = np.linspace(2000, 2030, 7)
+    num_data_centers = np.zeros((len(eval_years), 1))
+    for i in range(len(eval_years)):
+        num_data_centers[i] = len(map_df.loc[map_df['year built'] <= eval_years[i]])
+
+    plt.plot(eval_years, num_data_centers)
+    plt.xlabel('year')
+    plt.ylabel('number of data centers')
+    st.pyplot()
 
     if st.checkbox('Show dataframe for all data centers'):
         map_df
