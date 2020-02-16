@@ -3,9 +3,9 @@ from scipy import stats
 import numpy as np
 import pandas as pd
 
-sum_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/structure_research/Dataframes/singapore_sum_df')
-map_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/structure_research/Dataframes/singapore_map_df')
-ranking_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/structure_research/Dataframes/singapore_rank_df')
+sum_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_sum_df')
+map_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_map_df')
+ranking_df = pd.read_pickle('/Users/jonathancheung/Documents/GitHub/heroku_app/Dataframes/singapore_rank_df')
 
 """
 # Structure Research - Singapore 2020
@@ -16,7 +16,8 @@ years_to_observe = st.slider('Year to view ', 2000, 2030, 2000)
 '##### note that year 2000 datapoint is for clients who have not disclosed their online dates'
 map_data = map_df.loc[map_df['year built'] <= years_to_observe, ['latitude', 'longitude']]
 map_data = map_data[pd.to_numeric(map_data.iloc[:, 0], errors='coerce').notnull()] #selecting only non empty datapoints
-map_data = map_data[(np.abs(stats.zscore(map_data['latitude'])) < 1)] # removing outlier points due to localization error
+stats.zscore(np.array(map_data['latitude'], dtype=np.float64))
+map_data = map_data[stats.zscore(np.array(map_data['latitude'], dtype=np.float64)) < 1] # removing outlier points due to localization error
 st.map(map_data)
 
 if st.checkbox('Show dataframe for all data centers'):
